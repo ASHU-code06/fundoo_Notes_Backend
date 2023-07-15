@@ -11,11 +11,11 @@ export const userRegistration = async (req, res, next) => {
       data: data,
       message: 'User registered successfully'
     });
-
   } catch (error) {
     next(error);
   }
 };
+
 export const userLogin = async (req, res, next) => {
   try {
     const data = await UserService.userLoginCredentials(req.body);

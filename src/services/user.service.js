@@ -27,7 +27,7 @@ export const userLoginCredentials = async (body) => {
   }
   if (data) {
     const passwordMatch = bcrypt.compareSync(body.password, data.password);
-    console.log("*************************************************"+data.password);
+    //console.log("*************************************************"+data.password);
     if (!passwordMatch) {
       throw new Error('Invalid Password.');
     }
@@ -36,7 +36,7 @@ export const userLoginCredentials = async (body) => {
       process.env.SECRET_KEY,
       { expiresIn: '2h' }
     );
-    return data;
+    return token;
   }
 };
 
