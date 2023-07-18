@@ -21,31 +21,24 @@ export const newUser = async (body) => {
 
 //User login by email and password
 export const userLoginCredentials = async (body) => {
-  const data = await User.findOne({ email: body.email });
+
+  const data = await User.findOne({ where: { email: body.email } });
   if (!data) {
     throw new Error('Invalid emailId.');
   }
   if (data) {
-    const passwordMatch = bcrypt.compareSync(body.password, data.password);
-    //console.log("*************************************************"+data.password);
-    if (!passwordMatch) {
-      throw new Error('Invalid Password.');
+    const passwordMatch = await bcrypt.compare(body.password, data.dataValues.password);
+    if (passwordMatch) {
+      const token = jwt.sign(
+        { id: data.id, email: data.email },
+        process.env.SECRET_KEY,
+        { expiresIn: '4h' }
+      );
+      return token;
+    } else {
+      throw new Error('The password is not matching ');
     }
-    const token = jwt.sign(
-      { id: data.id, email: data.email },
-      process.env.SECRET_KEY,
-      { expiresIn: '2h' }
-    );
-    return token;
   }
 };
 
-// //match password and email
-// export const userLoginCredentials = async (body) =>{
-//   const passwordMatch = await User.findOne({ where: { email: body.email,password: body.password } });
-//   if(!passwordMatch){
-//     throw new Error ("invalid password ");
-//   }
-//   return passwordMatch;
 
-// };

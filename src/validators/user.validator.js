@@ -20,7 +20,7 @@ export const newUserValidator = (req, res, next) => {
 };
 export const userLoginValidater = (req, res, next) => {
   const schema = Joi.object({
-    email: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
     password: Joi.string().min(4).required()
   });
   const { error, value } = schema.validate(req.body);
