@@ -13,10 +13,10 @@ router.post('',newNoteValidator ,userAuth ,noteController.newNoteData);
 router.get('',userAuth,noteController.getAllNotes);
 
 //router to get a note by id 
-router.get('/:id',noteController.getNoteById);
+router.get('/:id',userAuth,noteController.getNoteById);
 
 //route to delete a note
-router.delete('/:id',noteController.deleteNote); 
+router.delete('/:id',userAuth,noteController.deleteNote); 
 
 //route to update a note 
 router.put('/:id',noteController.updateNote);

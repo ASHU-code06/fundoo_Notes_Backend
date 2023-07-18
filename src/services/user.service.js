@@ -21,13 +21,15 @@ export const newUser = async (body) => {
 
 //User login by email and password
 export const userLoginCredentials = async (body) => {
-
   const data = await User.findOne({ where: { email: body.email } });
   if (!data) {
     throw new Error('Invalid emailId.');
   }
   if (data) {
-    const passwordMatch = await bcrypt.compare(body.password, data.dataValues.password);
+    const passwordMatch = await bcrypt.compare(
+      body.password,
+      data.dataValues.password
+    );
     if (passwordMatch) {
       const token = jwt.sign(
         { id: data.id, email: data.email },
@@ -40,5 +42,3 @@ export const userLoginCredentials = async (body) => {
     }
   }
 };
-
-

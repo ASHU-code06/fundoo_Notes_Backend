@@ -70,10 +70,12 @@ export const newNoteData = async (req, res) => {
 
   export const updateNote = async (req,res,next) => {
     try{
-      const data = await UserNoteService.updateNoteById(req.params.id,req.params.body);
+      console.log(`%%%%%%%%%%%%%%%%%%%%${req.params.id}`);
+      console.log(req.body);
+      const updateddata = await UserNoteService.updateNoteById(req.params.id,req.body);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
-        data: data,
+        data: updateddata,
         message: 'Note updated successfully'
       });
      
