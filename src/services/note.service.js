@@ -10,8 +10,8 @@ export const newNote = async (body) => {
 };
 
 //get all users
-export const getAllNotes = async () => {
-  const data = await Note.findAll();
+export const getAllNotes = async (body) => {
+  const data = await Note.findAll({ where: { createdBy: body.createdBy } });
   return data;
 };
 
@@ -45,4 +45,52 @@ export const deleteNote = async (id) => {
     throw new Error('This Note does not exist ');
   }
   return 'note deleted succesfully';
+};
+
+//archive note
+export const archiveNote = async (id, body) => {
+  //variables:values
+  const data = await Note.findOne({
+    where: { id: id, createdBy: body.createdBy }
+  });
+  console.log(data);
+  if (!data) {
+    throw new Error('Provided invalid note id');
+  }
+  console.log('###########', Note.isArchive);
+  const archiveValue = !Note.isArchive; //working like a NOT GATE
+  console.log('#############################', archiveValue);
+  const updateNote = await Note.update(
+    { isArchive: archiveValue },
+    {
+      where: {
+        id: id
+      }
+    }
+  );
+  return updateNote;
+};
+
+//archive note
+export const trashNote = async (id, body) => {
+  //variables:values
+  const data = await Note.findOne({
+    where: { id: id, createdBy: body.createdBy }
+  });
+  console.log(data);
+  if (!data) {
+    throw new Error('Provided invalid note id');
+  }
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@', Note.isTrash);
+  const trashValue = !Note.isTrash; //working like a NOT GATE, toggle purpose
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', trashValue);
+  const updatedNote = await Note.update(
+    { isTrash: trashValue },
+    {
+      where: {
+        id: id
+      }
+    }
+  );
+  return updatedNote;
 };

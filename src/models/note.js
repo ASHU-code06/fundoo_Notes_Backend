@@ -14,7 +14,16 @@ module.exports = (sequelize, DataTypes) => {
   note.init(
     {
       title: DataTypes.STRING,
-      description: DataTypes.STRING
+      description: DataTypes.STRING,
+      createdBy:DataTypes.INTEGER,
+      isTrash: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false, // Set a default value for isTrash because without default value it was coming undefined
+      },
+      isArchive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false, // Set a default value for isArchive because without default value it was coming undefined
+      },
     },
     {
       sequelize,

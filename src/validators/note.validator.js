@@ -6,7 +6,9 @@ export const newNoteValidator = (req, res, next) => {
     title: Joi.string().min(3).required(),
     description: Joi.string().min(3).required(),
     color: Joi.string().optional()
+    
   });
+
   const { error, value } = schema.validate(req.body);
   if (error) {
     res.status(HttpStatus.BAD_REQUEST).json({

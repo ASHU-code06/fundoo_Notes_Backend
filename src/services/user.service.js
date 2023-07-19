@@ -12,10 +12,11 @@ export const newUser = async (body) => {
   if (isExist) {
     throw new Error('User already Exist');
   } else {
-    const hash = bcrypt.hashSync(body.password, 10);
+    const saltRounds = 10;
+    const hash = bcrypt.hashSync(body.password, saltRounds);
     body.password = hash;
     const data = await User.create(body);
-    return data;
+    return '';
   }
 };
 
