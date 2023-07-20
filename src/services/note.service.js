@@ -5,7 +5,6 @@ const Note = require('../models/note')(sequelize, DataTypes);
 //create new user
 export const newNote = async (body) => {
   const noteData = await Note.create(body);
-  console.log(`*******************${noteData}`);
   return noteData;
 };
 
@@ -57,9 +56,7 @@ export const archiveNote = async (id, body) => {
   if (!data) {
     throw new Error('Provided invalid note id');
   }
-  console.log('###########', Note.isArchive);
-  const archiveValue = !Note.isArchive; //working like a NOT GATE
-  console.log('#############################', archiveValue);
+  const archiveValue = !data.isArchive; //working like a NOT GATE
   const updateNote = await Note.update(
     { isArchive: archiveValue },
     {
@@ -81,9 +78,7 @@ export const trashNote = async (id, body) => {
   if (!data) {
     throw new Error('Provided invalid note id');
   }
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@', Note.isTrash);
-  const trashValue = !Note.isTrash; //working like a NOT GATE, toggle purpose
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', trashValue);
+  const trashValue = !data.isTrash; //working like a NOT GATE, toggle purpose
   const updatedNote = await Note.update(
     { isTrash: trashValue },
     {

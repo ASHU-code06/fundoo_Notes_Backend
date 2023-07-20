@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       createdBy:DataTypes.INTEGER,
       isTrash: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false, // Set a default value for isTrash because without default value it was coming undefined
+        defaultValue: 0, // Set a default value for isTrash because without default value it was coming undefined
       },
       isArchive: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false, // Set a default value for isArchive because without default value it was coming undefined
+        defaultValue: 0, // Set a default value for isArchive because without default value it was coming undefined
       },
     },
     {
