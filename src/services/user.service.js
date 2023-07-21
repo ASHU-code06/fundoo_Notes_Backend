@@ -27,15 +27,12 @@ export const userLoginCredentials = async (body) => {
     throw new Error('Invalid emailId.');
   }
   if (data) {
-    const passwordMatch = await bcrypt.compare(
-      body.password,
-      data.dataValues.password
-    );
+    const passwordMatch = await bcrypt.compare(body.password,data.dataValues.password);
     if (passwordMatch) {
       const token = jwt.sign(
         { id: data.id, email: data.email },
         process.env.SECRET_KEY,
-        { expiresIn: '4h' }
+        { expiresIn: '200d' }
       );
       return token;
     } else {
