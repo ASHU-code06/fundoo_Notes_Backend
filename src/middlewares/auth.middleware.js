@@ -18,14 +18,41 @@ export const userAuth = async (req, res, next) => {
       throw {
         code: HttpStatus.BAD_REQUEST,
         message: 'Authorization token is required'
-      }; 
+      };
     bearerToken = bearerToken.split(' ')[1];
     const user = await jwt.verify(bearerToken, process.env.SECRET_KEY);
-    req.body.createdBy = user.id ;
+    req.body.createdBy = user.id;
     //console.log(user);
     //console.log("User details");
     next();
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+    });
+  }
+};
+
+
+export const userAuthForResetPassword = async (req, res, next) => {
+  try {
+    //let bearerToken = req.params.token;
+    let bearerToken = req.header('Authorization');
+    if (!bearerToken)
+      throw {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'Authorization token is required.'
+      };
+    const token = bearerToken.split(' ')[1];
+    const user = await jwt.verify(token, process.env.PASSWORD_RESET_KEY);
+    req.body.id = user.id;
+    console.log('this is id', req.body.id);
+    console.log('this is the token ', token);
+    next();
+  } catch (error) {
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: `${error}`
+    });
   }
 };
