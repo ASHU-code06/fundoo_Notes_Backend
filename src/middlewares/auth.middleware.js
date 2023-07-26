@@ -46,8 +46,8 @@ export const userAuthForResetPassword = async (req, res, next) => {
     const token = bearerToken.split(' ')[1];
     const user = await jwt.verify(token, process.env.PASSWORD_RESET_KEY);
     req.body.id = user.id;
-    console.log('this is id', req.body.id);
-    console.log('this is the token ', token);
+    //console.log('this is id', req.body.id);
+    //console.log('this is the token ', token);
     next();
   } catch (error) {
     res.status(HttpStatus.BAD_REQUEST).json({
