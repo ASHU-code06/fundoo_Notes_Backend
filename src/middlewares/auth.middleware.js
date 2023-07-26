@@ -36,7 +36,7 @@ export const userAuth = async (req, res, next) => {
 
 export const userAuthForResetPassword = async (req, res, next) => {
   try {
-    //let bearerToken = req.params.token;
+    
     let bearerToken = req.header('Authorization');
     if (!bearerToken)
       throw {
@@ -46,8 +46,6 @@ export const userAuthForResetPassword = async (req, res, next) => {
     const token = bearerToken.split(' ')[1];
     const user = await jwt.verify(token, process.env.PASSWORD_RESET_KEY);
     req.body.id = user.id;
-    //console.log('this is id', req.body.id);
-    //console.log('this is the token ', token);
     next();
   } catch (error) {
     res.status(HttpStatus.BAD_REQUEST).json({
