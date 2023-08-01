@@ -6,6 +6,13 @@ const Note = require('../models/note')(sequelize, DataTypes);
 //create new user
 export const newNote = async (body) => {
   const noteData = await Note.create(body);
+  client.del('getAll', (err, reply) => {
+    if (err) {
+      console.error('Error deleting key from Redis:', err);
+    } else {
+      console.log('Key deleted from Redis:', reply);
+    }
+  });
   return noteData;
 };
 
@@ -16,30 +23,7 @@ export const getAllNotes = async (body) => {
   if (data) {
     await client.set("getAll", JSON.stringify(data));
   } 
-   // client.del('getAll', (err, reply) => {
-  //   if (err) {
-  //     console.error('Error deleting key from Redis:', err);
-  //   } else {
-  //     console.log('Key deleted from Redis:', reply);
-  //   }
-  // });
-  return data;
-  // if (data.length > 0) {
-  //   await client.set("getAll", JSON.stringify(data));
-  //   return data;
-  // } else {
-  //   client.del('getAll', (err, reply) => {
-  //     if (err) {
-  //       console.error('Error deleting key from Redis:', err);
-  //     } else {
-  //       console.log('Key deleted from Redis:', reply);
-  //     }
-  //   });
-  //   return [];
-  // }
- 
- 
-  
+  return data; 
 };
 
 //get note by id
@@ -55,6 +39,13 @@ export const getById = async (id) => {
 //update a note by id
 export const updateNoteById = async (id, body) => {
   const findNote = await Note.findOne({ where: { id: id } });
+  client.del('getAll', (err, reply) => {
+    if (err) {
+      console.error('Error deleting key from Redis:', err);
+    } else {
+      console.log('Key deleted from Redis:', reply);
+    }
+  });
   if (!findNote) {
     //if note does not exist
     throw new Error('This Note does not exist ');
@@ -67,6 +58,13 @@ export const updateNoteById = async (id, body) => {
 //delete Note by id
 export const deleteNote = async (id) => {
   const data = await Note.destroy({ where: { id: id } });
+  client.del('getAll', (err, reply) => {
+    if (err) {
+      console.error('Error deleting key from Redis:', err);
+    } else {
+      console.log('Key deleted from Redis:', reply);
+    }
+  });
   if (!data) {
     //if note is already deleted
     throw new Error('This Note does not exist ');
@@ -94,6 +92,13 @@ export const archiveNote = async (id, body) => {
     }
 
   );
+  client.del('getAll', (err, reply) => {
+    if (err) {
+      console.error('Error deleting key from Redis:', err);
+    } else {
+      console.log('Key deleted from Redis:', reply);
+    }
+  });
   return updateNote;
 };
 
@@ -116,5 +121,12 @@ export const trashNote = async (id, body) => {
       }
     }
   );
+  client.del('getAll', (err, reply) => {
+    if (err) {
+      console.error('Error deleting key from Redis:', err);
+    } else {
+      console.log('Key deleted from Redis:', reply);
+    }
+  });
   return updatedNote;
 };
