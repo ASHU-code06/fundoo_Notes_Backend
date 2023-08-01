@@ -5,8 +5,6 @@ import * as utils from '../utils/sendMail';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const nodemailer = require('nodemailer');
-
 const User = require('../models/user')(sequelize, DataTypes);
 
 //create new user
@@ -23,19 +21,6 @@ export const newUser = async (body) => {
   }
 };
 
-//reset password
-export const resetPassword = async (body) => {
-  const data = await User.findOne({ where: { id: body.id } });
-  if (!data) {
-    throw new Error('This user does not exist ');
-  } else {
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(body.password, saltRounds);
-    body.passWord = hash;
-    var updatedValue = await User.update(body, { where: { id: body.id } });
-  }
-  return updatedValue;
-};
 
 //User login by email and password
 export const userLoginCredentials = async (body) => {
@@ -66,13 +51,27 @@ export const forgetPassword = async (body) => {
   if (data) {
     const token = jwt.sign(
       { email: data.email, id: data.id },
-      process.env.PASSWORD_RESET_KEY,
-      { expiresIn: '23h' }
+      process.env.PASSWORD_RESET_KEY
     );
-    await utils.sendMail(data.email, token);
-    //utils.sendMail()
+    await utils.sendTheMail(data.email, token);
     return token;
   } else {
     throw new Error('Email not found');
   }
+};
+
+
+//reset password
+export const resetPassword = async (body) => {
+
+  const data = await User.findOne({ where: { id: body.id } });
+  if (!data) {
+    throw new Error('This user does not exist ');
+  } else {
+    const saltRounds = 10;
+    const hash = bcrypt.hashSync(body.password, saltRounds);
+    body.passWord = hash;
+    var updatedValue = await User.update(body, { where: { id: body.id } });
+  }
+  return updatedValue;
 };

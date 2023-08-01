@@ -1,7 +1,5 @@
 import HttpStatus from 'http-status-codes';
 import * as UserService from '../services/user.service';
-import user from '../models/user';
-
 
 
 export const userRegistration = async (req, res) => {
@@ -37,20 +35,19 @@ export const userLogin = async (req, res, next) => {
   }
 };
 
-export const forgetPassword = async(req, res)=>{
-  try{
+export const forgetPassword = async (req, res) => {
+  try {
     const newToken = await UserService.forgetPassword(req.body);
     res.status(HttpStatus.OK).json({
-      code : HttpStatus.OK,
-      token : newToken,
-      message : 'Code sent to recovery email or phoneNumber'
+      code: HttpStatus.OK,
+      token: newToken,
+      message: 'Code sent to recovery email or phoneNumber'
     });
-  }catch(error){
+  } catch (error) {
     res.status(HttpStatus.BAD_REQUEST).json({
       code: HttpStatus.BAD_REQUEST,
       message: `${error}`
     });
-
   }
 };
 

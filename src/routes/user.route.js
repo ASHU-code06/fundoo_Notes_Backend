@@ -2,6 +2,7 @@ import express from 'express';
 import * as userController from '../controllers/user.controller';
 import { newUserValidator } from '../validators/user.validator';
 import { userAuthForResetPassword } from '../middlewares/auth.middleware';  
+import { redisData } from '../middlewares/redis.middleware';
 
 
 const router = express.Router();

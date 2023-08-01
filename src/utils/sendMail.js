@@ -18,7 +18,7 @@ const oAuth2client = new google.auth.OAuth2(
 );
 oAuth2client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-export async function sendMail(email, token) {
+export async function sendTheMail(email, token) {
   try {
     const accessToken = await oAuth2client.getAccessToken();
     const transport = nodemailer.createTransport({
@@ -33,7 +33,7 @@ export async function sendMail(email, token) {
       }
     });
 
-    const mailOPtions = {
+    const mailOptions = {
       from: 'ASHU<ashuc306@gmail.com> ',
       to: email,
       subject: 'RESET PASSWORD',
@@ -41,7 +41,8 @@ export async function sendMail(email, token) {
       html: '<h1>........</h1>'
     };
 
-    const result = await transport.sendMail(mailOPtions);
+    const result = await transport.sendTheMail(mailOptions);
+    console.log("Email Sent successfully:",result);
     return result;
   } catch (error) {
     res.status(HttpStatus.BAD_REQUEST).json({
@@ -49,5 +50,7 @@ export async function sendMail(email, token) {
       message: `${error}`
     });
   }
+  
+
 }
-export default sendMail;
+export default sendTheMail;

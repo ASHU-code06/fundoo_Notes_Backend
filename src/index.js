@@ -17,12 +17,15 @@ import {
 import logger, { logStream } from './config/logger';
 
 import morgan from 'morgan';
+import redisdb from './config/redisdb';
+
 
 const app = express();
 const host = process.env.APP_HOST;
 const port = process.env.APP_PORT;
 const api_version = process.env.API_VERSION;
 
+redisdb();
 app.use(cors());
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));

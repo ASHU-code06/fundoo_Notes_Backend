@@ -1,4 +1,5 @@
 import sequelize, { DataTypes } from '../config/database';
+import {client}  from '../config/redisdb';
 
 const Note = require('../models/note')(sequelize, DataTypes);
 
@@ -11,7 +12,34 @@ export const newNote = async (body) => {
 //get all users
 export const getAllNotes = async (body) => {
   const data = await Note.findAll({ where: { createdBy: body.createdBy } });
+  console.log(data);
+  if (data) {
+    await client.set("getAll", JSON.stringify(data));
+  } 
+   // client.del('getAll', (err, reply) => {
+  //   if (err) {
+  //     console.error('Error deleting key from Redis:', err);
+  //   } else {
+  //     console.log('Key deleted from Redis:', reply);
+  //   }
+  // });
   return data;
+  // if (data.length > 0) {
+  //   await client.set("getAll", JSON.stringify(data));
+  //   return data;
+  // } else {
+  //   client.del('getAll', (err, reply) => {
+  //     if (err) {
+  //       console.error('Error deleting key from Redis:', err);
+  //     } else {
+  //       console.log('Key deleted from Redis:', reply);
+  //     }
+  //   });
+  //   return [];
+  // }
+ 
+ 
+  
 };
 
 //get note by id
@@ -64,6 +92,7 @@ export const archiveNote = async (id, body) => {
         id: id
       }
     }
+
   );
   return updateNote;
 };

@@ -20,6 +20,7 @@ export const userAuth = async (req, res, next) => {
         message: 'Authorization token is required'
       };
     bearerToken = bearerToken.split(' ')[1];
+   // token and secret key both comibined ; jwt verify checks whether is has the same secret key or key .
     const user = await jwt.verify(bearerToken, process.env.SECRET_KEY);
     req.body.createdBy = user.id;
     //console.log(user);
